@@ -19,7 +19,15 @@ export const getPosts = async () => {
 
   try {
     const api = new NotionAPI()
-    const response = await api.getPage(id)
+    const fetchOptions = {
+      gotOptions: {
+        headers: {
+          "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+          "accept-language": "en-US,en;q=0.9"
+        }
+      }
+    }
+    const response = await api.getPage(id, fetchOptions)
     if (!response || !response.collection || !response.block) {
       return []
     }
