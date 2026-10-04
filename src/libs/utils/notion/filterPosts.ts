@@ -19,22 +19,29 @@ export function filterPosts(
   options: FilterPostsOptions = initialOption
 ) {
   const { acceptStatus = ["Public"], acceptType = ["Post"] } = options
+  if (!Array.isArray(posts)) return []
+
   const filteredPosts = posts
     // filter data
     .filter((post) => {
+      if (!post) return false
+      const title = post.title || (post as any).Title || (post as any).name || (post as any).Name
+      const slug = post.slug || (post as any).Slug
       const postDate = new Date(post?.date?.start_date || post.createdTime)
-      if (!post.title || !post.slug || postDate > tomorrow) return false
+      if (!title || !slug || postDate > tomorrow) return false
       return true
     })
     // filter status
     .filter((post) => {
-      const postStatus = post.status[0]
-      return acceptStatus.includes(postStatus)
+      const rawStatus = post?.status || (post as any)?.Status || (post as any)?.status
+      const postStatus = Array.isArray(rawStatus) ? rawStatus[0] : (rawStatus || "Public")
+      return acceptStatus.includes(postStatus as any)
     })
     // filter type
     .filter((post) => {
-      const postType = post.type[0]
-      return acceptType.includes(postType)
+      const rawType = post?.type || (post as any)?.Type || (post as any)?.type
+      const postType = Array.isArray(rawType) ? rawType[0] : (rawType || "Post")
+      return acceptType.includes(postType as any)
     })
   return filteredPosts
 }
