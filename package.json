@@ -7,6 +7,7 @@
     "url": "https://github.com/morethanmin/morethan-log.git"
   },
   "scripts": {
+    "prebuild": "rm -f public/sitemap*.xml public/robots.txt",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
